@@ -10,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.fakestoreproductviewer.data.Result
 import com.example.fakestoreproductviewer.ui.screens.HomeScreen
 import com.example.fakestoreproductviewer.ui.screens.ProductDetailsScreen
 import com.example.fakestoreproductviewer.ui.theme.FakeStoreProductViewerTheme
@@ -38,10 +39,14 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable("details/{productId}") { backStackEntry ->
-                        val products by viewModel.productsState.collectAsState()
+                        val result by viewModel.productsState.collectAsState()
                         val productId = backStackEntry.arguments?.getString("productId")?.toIntOrNull()
-                        val product = productId?.let { id ->
-                            products.find { product -> product.id == id }
+                        val product = when (result) {
+                            is Result.Success -> {
+                                val products = (result as Result.Success).data
+                                productId?.let { id -> products.find { it.id == id } }
+                            }
+                            else -> null
                         }
                         ProductDetailsScreen(product = product)
                     }
