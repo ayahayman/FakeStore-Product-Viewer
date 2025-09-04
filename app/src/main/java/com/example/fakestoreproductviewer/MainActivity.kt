@@ -16,6 +16,7 @@ import com.example.fakestoreproductviewer.ui.theme.FakeStoreProductViewerTheme
 import com.example.fakestoreproductviewer.ui.viewModels.ProductViewModel
 
 class MainActivity : ComponentActivity() {
+
     private val viewModel: ProductViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
